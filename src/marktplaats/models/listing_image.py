@@ -62,13 +62,18 @@ def fetch_listing_images(listing_id: str) -> list[str]:
     for data in soup.select('script[type="application/ld+json"]'):
         parsed = json.loads(data.text)
         # the list of image URLs is hidden within the product object
-        if type(parsed) is dict and parsed["@type"] == "Product":
-            # actual photos are protocol-relative (//images.marktplaats.com/...).
-            #  Listings without photos have an absolute placeholder URL here
-            #  instead, which we don't want to return as an image.
-            images.extend(
-                f"https:{image}" for image in parsed["image"] if image.startswith("//")
-            )
+        if isinstance(parsed, dict) and parsed["@type"] == "Product":
+            #  Listings without photos have an absolute placeholder URL,
+            #  which we don't want to return as an image. The URL is/was:
+            #  https://www.hzcdn.io/bff/static/vendor/hz-web-ui/mp/assets/tenant-coin--nlnl.e0064ede.svg
+            for image in parsed["image"]:
+                if image.startswith("//"):
+                    # Sometimes photos are protocol-relative
+                    #  (//images.marktplaats.com/...)
+                    images.append(f"https:{image}")
+                elif image.startswith("https://images.marktplaats.com"):
+                    images.append(image)
+
             break
 
     return images
