@@ -8,7 +8,7 @@ from typing_extensions import Self
 
 
 if TYPE_CHECKING:
-    from marktplaats.api_types import Location
+    from 2dehandsbe.api_types import Location
 
 
 @dataclass
