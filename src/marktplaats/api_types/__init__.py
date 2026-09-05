@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from marktplaats.api_types.search import (
+from 2dehandsbe.api_types.search import (
     Attribute as Attribute,
     Location as Location,
     Picture as Picture,
@@ -8,9 +8,9 @@ from marktplaats.api_types.search import (
     Review as Review,
     SellerInformation as SellerInformation,
 )
-from marktplaats.api_types.seller_details import (
+from 2dehandsbe.api_types.seller_details import (
     SellerDetailsResponse as SellerDetailsResponse,
 )
-from marktplaats.api_types.seller_listings import (
+from 2dehandsbe.api_types.seller_listings import (
     SellerListingsResponse as SellerListingsResponse,
 )
