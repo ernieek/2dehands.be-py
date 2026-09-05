@@ -4,17 +4,17 @@ import warnings
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from marktplaats.models.listing_image import ListingFirstImage, fetch_listing_images
+from 2dehandsbe.models.listing_image import ListingFirstImage, fetch_listing_images
 
 
 if TYPE_CHECKING:
     from datetime import date
     from types import NotImplementedType
 
-    from marktplaats.api_types import Attribute
-    from marktplaats.models.listing_location import ListingLocation
-    from marktplaats.models.listing_seller import ListingSeller
-    from marktplaats.models.price_type import PriceType
+    from 2dehandsbe.api_types import Attribute
+    from 2dehandsbe.models.listing_location import ListingLocation
+    from 2dehandsbe.models.listing_seller import ListingSeller
+    from 2dehandsbe.models.price_type import PriceType
 
 
 @dataclass
