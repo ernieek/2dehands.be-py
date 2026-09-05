@@ -1,9 +1,9 @@
-# marktplaats-py
-A small Python package to request listings from marktplaats.nl. It supports python 3.10+.
+# 2dehands.be-py
+A small Python package to request listings from 2dehands.be. It supports python 3.10+.
 
 ## Installing
 ```shell
-pip install marktplaats
+pip install 2dehandsbe
 ```
 
 ## Example
@@ -11,11 +11,11 @@ This is an example on how to use the library:
 ```py
 from datetime import datetime, timedelta
 
-from marktplaats import Condition, SearchQuery, SortBy, SortOrder, category_from_name
+from 2dehandsbe import Condition, SearchQuery, SortBy, SortOrder, category_from_name
 
 search = SearchQuery(
     query="gazelle",  # Search query. Can be left out, but then category must be specified.
-    zip_code="1016LV",  # Zip code to base distance from
+    zip_code="1016",  # Zip code to base distance from
     distance_km=100,  # Max distance in kilometers from the zip code for listings
     price_from=0,  # Lowest price to search for
     price_to=100,  # Highest price to search for
@@ -65,11 +65,11 @@ for listing in listings:
 Query a seller by their ID. This allows fetching the seller's details and
 all their listings.
 The seller ID can be obtained from the Marktplaats website: copy it from a
-seller's profile URL, e.g. `https://www.marktplaats.nl/u/johndoe/12345678/`.
+seller's profile URL, e.g. `https://www.2dehands.be/u/johndoe/12345678/`.
 
 ```python
 import pprint
-from marktplaats import SellerQuery
+from 2dehandsbe import SellerQuery
 
 seller = SellerQuery(seller_id=12345678)
 
@@ -83,12 +83,12 @@ for listing in listings["items"]:
 ```
 
 ## Categories
-Filtering by Marktplaats category is possible. Please refer to the categories index at [CATEGORIES.md](./CATEGORIES.md)
+Filtering by 2dehandsbe category is possible. Please refer to the categories index at [CATEGORIES.md](./CATEGORIES.md)
 
 The categories can also be used programmatically. Some usage examples:
 
 ```python
-from marktplaats import L1Category, category_from_name, get_l1_categories, get_l2_categories, get_l2_categories_by_parent, get_subcategories
+from 2dehandsbe import L1Category, category_from_name, get_l1_categories, get_l2_categories, get_l2_categories_by_parent, get_subcategories
 
 # List all level 1 categories.
 for cat in get_l1_categories():
