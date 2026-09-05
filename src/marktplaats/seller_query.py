@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from marktplaats.utils import get_request
+from 2dehandsbe.utils import get_request
 
 
 if TYPE_CHECKING:
-    from marktplaats.api_types import SellerDetailsResponse, SellerListingsResponse
+    from 2dehandsbe.api_types import SellerDetailsResponse, SellerListingsResponse
 
 
 class SellerQuery:
@@ -26,7 +26,7 @@ class SellerQuery:
 
         """
         if self._details_raw is None:
-            url = f"https://www.marktplaats.nl/v/api/seller-profile/{self.seller_id}"
+            url = f"https://www.2dehands.be/v/api/seller-profile/{self.seller_id}"
             res = get_request(url)
             res.raise_for_status()
             payload = res.json()
@@ -42,7 +42,7 @@ class SellerQuery:
 
         """
         if self._listings_raw is None:
-            url = "https://www.marktplaats.nl/v/api/seller-other-items"
+            url = "https://www.2dehands.be/v/api/seller-other-items"
             params = {
                 "sellerId": self.seller_id,
                 "itemId": "m0123456789",  # Any item ID will do.
