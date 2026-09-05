@@ -7,17 +7,17 @@ from typing import TYPE_CHECKING
 from bs4 import BeautifulSoup
 from typing_extensions import Self
 
-from marktplaats.utils import get_request
+from 2dehandsbe.utils import get_request
 
 
 if TYPE_CHECKING:
-    from marktplaats.api_types import Picture
+    from 2dehandsbe.api_types import Picture
 
 
 @dataclass
 class ListingFirstImage:
     """
-    Data format for the listing image that marktplaats responds with when doing a search query.
+    Data format for the listing image that 2dehandsbe responds with when doing a search query.
 
     The get_images() method will not use this format, but instead return a list of URLs.
     """  # ruff:ignore[line-too-long] Line too long, we can't easily wrap it in the docstring
@@ -51,7 +51,7 @@ def fetch_listing_images(listing_id: str) -> list[str]:
     :param listing_id: The listing ID to get images for.
     :return: A list of image URLs (https).
     """  # ruff:ignore[docstring-missing-returns] TODO: all the docstrings are a bit inconsistent
-    r = get_request(f"https://link.marktplaats.nl/{listing_id}")
+    r = get_request(f"https://link.2dehands.be/{listing_id}")
     r.raise_for_status()  # raises so we can stop the fetching on a higher level
 
     soup = BeautifulSoup(r.text, "html.parser")
@@ -69,9 +69,9 @@ def fetch_listing_images(listing_id: str) -> list[str]:
             for image in parsed["image"]:
                 if image.startswith("//"):
                     # Sometimes photos are protocol-relative
-                    #  (//images.marktplaats.com/...)
+                    #  (//images.2dehands.be/...)
                     images.append(f"https:{image}")
-                elif image.startswith("https://images.marktplaats.com"):
+                elif image.startswith("https://images.2dehands.be"):
                     images.append(image)
 
             break
