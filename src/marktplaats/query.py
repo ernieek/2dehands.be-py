@@ -11,16 +11,16 @@ from requests.exceptions import (  # ruff:ignore[banned-api] Not doing any reque
 )
 from typing_extensions import NotRequired
 
-from marktplaats.categories import L1Category, L2Category
-from marktplaats.config import ISSUE_LINK
-from marktplaats.models import (
+from 2dehandsbe.categories import L1Category, L2Category
+from 2dehandsbe.config import ISSUE_LINK
+from 2dehandsbe.models import (
     Listing,
     ListingFirstImage,
     ListingLocation,
     ListingSeller,
 )
-from marktplaats.models.price_type import PriceType
-from marktplaats.utils import MessageObjectException, get_request
+from 2dehandsbe.models.price_type import PriceType
+from 2dehandsbe.utils import MessageObjectException, get_request
 
 
 if TYPE_CHECKING:
@@ -89,12 +89,12 @@ class Condition(Enum):
 
 
 def get_price_cents(price: int | None) -> str:
-    # Marktplaats uses the string "null" if the lower/upper bound is empty
+    # 2dehandsbe uses the string "null" if the lower/upper bound is empty
     return "null" if price is None else str(price * 100)
 
 
 def replace_dutch_months(date_str: str) -> str:
-    # marktplaats returns Dutch names for months
+    # 2dehandsbe returns Dutch names for months
     # so we need to convert them to english to be parsed
     for dutch, english in MONTH_MAPPING.items():
         date_str = date_str.replace(dutch, english)
@@ -102,7 +102,7 @@ def replace_dutch_months(date_str: str) -> str:
 
 
 def parse_date(date_str: str) -> date:
-    # marktplaats returns these relative words for the date
+    # 2dehandsbe returns these relative words for the date
     # OR a date like '10 mrt 24'
     if date_str == "Eergisteren":
         result = datetime.now() - timedelta(days=2)
@@ -141,7 +141,7 @@ Params = TypedDict(
 
 class SearchQuery:
     """
-    A search query for Marktplaats.
+    A search query for 2dehandsbe.
 
     Raises a requests.HTTPError if the request fails.
     """
@@ -231,7 +231,7 @@ class SearchQuery:
             params["l1CategoryId"] = str(category.id)
 
         self.response = get_request(
-            "https://www.marktplaats.nl/lrp/api/search",
+            "https://www.2dehands.be/lrp/api/search",
             params=params,
         )
 
@@ -263,7 +263,7 @@ class SearchQuery:
 
     def get_listings(self) -> list[Listing]:
         listings = []
-        # Marktplaats pads small pages with extra listings (e.g. a limit=5
+        # 2dehandsbe pads small pages with extra listings (e.g. a limit=5
         #  request sometimes returns 20). The first `limit` items are the actual page
         #  window, so anything after that is cut off.
         for listing in self.body_json["listings"][: self.limit]:
@@ -271,7 +271,7 @@ class SearchQuery:
                 listing_time = parse_date(listing["date"])
             except ValueError:
                 logger.warning(
-                    "Marktplaats-py found an unknown date format for listing %s: '%s'. "
+                    "2dehandsbe-py found an unknown date format for listing %s: '%s'. "
                     "This is not your fault. "
                     "Please create an issue on %s and include this log message.",
                     listing["itemId"],
@@ -283,9 +283,9 @@ class SearchQuery:
             try:
                 price_type = PriceType(listing["priceInfo"]["priceType"])
             except ValueError:
-                # this means marktplaats has a PriceType this library doesn't know about
+                # this means 2dehandsbe has a PriceType this library doesn't know about
                 logger.warning(
-                    "Marktplaats-py found an unknown PriceType found for "
+                    "2dehandsbe-py found an unknown PriceType found for "
                     "listing %s: '%s'. "
                     "This is not your fault. "
                     "Please create an issue on %s and include this log message.",
@@ -305,7 +305,7 @@ class SearchQuery:
                 ListingLocation.parse(listing["location"]),
                 listing["priceInfo"]["priceCents"] / 100,
                 price_type,
-                "https://link.marktplaats.nl/" + listing["itemId"],
+                "https://link.2dehands.be/" + listing["itemId"],
                 ListingFirstImage.parse(listing.get("pictures")),
                 listing["categoryId"],
                 listing.get("attributes", []),
