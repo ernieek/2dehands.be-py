@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING
 
 from typing_extensions import Self
 
-from marktplaats.utils import get_request
+from 2dehandsbe.utils import get_request
 
 
 if TYPE_CHECKING:
-    from marktplaats.api_types import Review, SellerInformation
+    from 2dehandsbe.api_types import Review, SellerInformation
 
 
 @dataclass
@@ -41,7 +41,7 @@ class ListingSeller:
 
     def get_seller(self) -> Seller:
         request = get_request(
-            f"https://www.marktplaats.nl/v/api/seller-profile/{self.id}"
+            f"https://www.2dehands.be/v/api/seller-profile/{self.id}"
         )
 
         body = request.text
