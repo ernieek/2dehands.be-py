@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, TypedDict
 
 
 if TYPE_CHECKING:
-    from marktplaats.api_types.search import Picture, PriceInfo
+    from 2dehandsbe.api_types.search import Picture, PriceInfo
 
 
 class Category(TypedDict):
